@@ -1,0 +1,15 @@
+{
+   "name": "codestepper",
+   "description": "",
+   "version": "1.0",
+   "manifest_version": 3,
+   "action": {
+       "default_popup": "index.html",
+       "default_title": ""
+   },
+   "icons": {
+       "16": "codestepper.png",
+       "48": "codestepper.png",
+       "128": "codestepper.png"
+   }
+}

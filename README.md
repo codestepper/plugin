@@ -1,2 +1,3 @@
-# plugin
-Opensource browser plugin for the codestepper application
+# Codestepper Plugin
+
+Open-source browser plugin for the codestepper application

@@ -7,6 +7,9 @@
        "default_popup": "index.html",
        "default_title": ""
    },
+    "permissions": [
+        "tabs"
+    ],
    "icons": {
        "16": "codestepper.png",
        "48": "codestepper.png",

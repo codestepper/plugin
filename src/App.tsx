@@ -1,23 +1,11 @@
-import React from 'react';
-import logo from './codestepper.png';
+import * as React from 'react';
+import Entry from './Components/Entry'
 import './App.css';
 
-const styles = {
-  img: {
-    width: '300',
-    height: '200',
-    margin: '50px auto',
-  },
-} as const;
-
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} style={styles.img} className="App-logo" alt="logo" />
-      </header>
+    <div>
+      <Entry />
     </div>
   );
 }
-
-export default App;

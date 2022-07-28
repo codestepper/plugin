@@ -4,11 +4,13 @@ import Comment from './Comment'
 import Page from './Page'
 import Buttons from './Buttons'
 
-chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
-  let url = tabs[0].url;
-  // use `url` here inside the callback because it's asynchronous!
-  console.log(url)
-});
+if (window.chrome !== undefined) {
+  window.chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+    let url = tabs[0].url;
+    // use `url` here inside the callback because it's asynchronous!
+    console.log(url)
+  });
+}
 
 export default function Entry() {
   return (

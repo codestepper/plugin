@@ -21,14 +21,29 @@ type EntryState = {
 
 const initialEntryState = {
   id: "",
-  page: 0,
-  pages: 0,
+  page: 1,
+  pages: 1,
   comment: "",
   codeReview: { url: "", anchors: [] },
 }
 
 class Entry extends React.Component<EntryProps, EntryState> {
   state: Readonly<EntryState> = initialEntryState;
+
+  handlePaginationChange(_: any, page: number) {
+    let comment = ""
+    let anchor = this.state.codeReview.anchors[page - 1]
+    if (anchor !== undefined) {
+      comment = anchor.comment;
+    }
+
+    const newState = {
+      page,
+      comment,
+    };
+
+    this.setState(newState);
+  }
 
   componentDidUpdate(prevProps: EntryProps) {
     if (prevProps.url === this.props.url) {
@@ -53,14 +68,14 @@ class Entry extends React.Component<EntryProps, EntryState> {
       if (currentURLKey === storedURLKey) {
         let page = this.state.page;
         if (page > codeReview.anchors.length) {
-          page = 0;
+          page = 1;
         }
 
         const newState = {
           id: currentURL.searchParams.toString(),
           page: page,
-          pages: codeReview.anchors.length,
-          comment: codeReview.anchors[page].comment,
+          pages: codeReview.anchors.length + 1,
+          comment: codeReview.anchors[page-1].comment,
           codeReview,
         }
 
@@ -81,7 +96,7 @@ class Entry extends React.Component<EntryProps, EntryState> {
             <Comment text={this.state.comment} />
           </Grid>
           <Grid item xs={12}>
-            <Page />
+            <Page currentPage={this.state.page} totalPages={this.state.pages} handlePaginationChange={this.handlePaginationChange.bind(this)}/>
           </Grid>
           <Grid item xs={12}>
             <Buttons />

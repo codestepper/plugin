@@ -1,14 +1,17 @@
 import TextField from '@mui/material/TextField';
 
-export default function Comment() {
+type Props = {
+  text: string
+}
+
+export default function Comment(props: Props) {
   return (
       <TextField
-          id="outlined-multiline-static"
-          label="Context"
-          style={{ width: "100%" }}
-          multiline
-          rows={4}
-          defaultValue="Additional context here"
+        id="outlined-multiline-static"
+        style={{ width: "100%" }}
+        multiline
+        defaultValue={props.text}
+        rows={4}
       />
   );
 }

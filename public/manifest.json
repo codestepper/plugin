@@ -7,6 +7,7 @@
        "default_popup": "index.html",
        "default_title": ""
    },
+   "browser_action": {},
     "permissions": [
         "tabs"
     ],

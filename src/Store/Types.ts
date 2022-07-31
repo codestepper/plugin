@@ -13,4 +13,5 @@ export interface CodeReviewStorageInterface {
   Get(url: string): CodeReview | undefined;
   Save(url: string, id: string, comment: string): CodeReview[];
   Delete(url: string, id: string): CodeReview[];
+  _set(data: CodeReview[]): void;
 }

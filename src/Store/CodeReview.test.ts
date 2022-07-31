@@ -1,6 +1,10 @@
 import { LocalCodeReviewStorage } from './CodeReview';
 import { CodeReview, CodeReviewStorageInterface } from './Types';
 
+function fakeUpdater(data: CodeReview[]): void {
+  return;
+}
+
 test('initializes local code review', () => {
   const testData: CodeReview[] = [
     {
@@ -15,7 +19,8 @@ test('initializes local code review', () => {
     },
   ];
 
-  let codeReview: CodeReviewStorageInterface = new LocalCodeReviewStorage(testData);
+  let codeReview: CodeReviewStorageInterface = new LocalCodeReviewStorage(fakeUpdater);
+  codeReview._set(testData);
   expect(codeReview.Data()).toEqual(testData);
 });
 
@@ -32,7 +37,8 @@ test('LocalCodeReview.Get(...) finds correct code review', () => {
       ],
     },
   ];
-  let codeReview: CodeReviewStorageInterface = new LocalCodeReviewStorage(testData);
+  let codeReview: CodeReviewStorageInterface = new LocalCodeReviewStorage(fakeUpdater);
+  codeReview._set(testData);
   expect(
     codeReview.Get(
       'http://localhost:8000/public/#diff-f9ab71f49e2da0a54c01b22e503d19c70987b66c806826d5ed1b7022f7314R31'
@@ -41,7 +47,7 @@ test('LocalCodeReview.Get(...) finds correct code review', () => {
 });
 
 test('LocalCodeReview.Save(...) inserts new record', () => {
-  let codeReview: CodeReviewStorageInterface = new LocalCodeReviewStorage([]);
+  let codeReview: CodeReviewStorageInterface = new LocalCodeReviewStorage(fakeUpdater);
   let res: CodeReview[] = codeReview.Save(
     'https://github.com/foo/bar/pull/8518/files#diff-193b27d62e4fbda3d563009fed5ec6761a05f73558d94b39fab63ae948c679eaR51',
     '#diff-193b27d62e4fbda3d563009fed5ec6761a05f73558d94b39fab63ae948c679eaR51',
@@ -67,7 +73,8 @@ test('LocalCodeReview.Delete(...) removes a record', () => {
       ],
     },
   ];
-  let codeReview: CodeReviewStorageInterface = new LocalCodeReviewStorage(testData);
+  let codeReview: CodeReviewStorageInterface = new LocalCodeReviewStorage(fakeUpdater);
+  codeReview._set(testData);
   let res: CodeReview[] = codeReview.Delete(
     'http://localhost:8000/public/',
     'diff-34df9ab71f49e2da0a54c01b22e503d19c70987b66c806826d5ed1b7022f7314R31'
@@ -80,7 +87,7 @@ test('LocalCodeReview.Delete(...) removes a record', () => {
   expect(res.length).toBe(0);
 });
 
-test.only('LocalCodeReview mixed commands', () => {
+test('LocalCodeReview mixed commands', () => {
   const testData: CodeReview[] = [
     {
       url: 'http://localhost:8000/public/',
@@ -93,10 +100,10 @@ test.only('LocalCodeReview mixed commands', () => {
       ],
     },
   ];
-  let codeReview: CodeReviewStorageInterface = new LocalCodeReviewStorage(testData);
+  let codeReview: CodeReviewStorageInterface = new LocalCodeReviewStorage(fakeUpdater);
+  codeReview._set(testData);
   let data = codeReview.Save('http://localhost:8000/public/', 'diff-3', 'final comment');
   expect(data.length).toBe(1);
   expect(data[0].url).toBe('http://localhost:8000/public/');
-  console.log(data[0].anchors);
   expect(data[0].anchors.length).toBe(3);
 });

@@ -1,16 +1,29 @@
 import * as React from 'react';
 import Entry from './Components/Entry';
-import { testData } from './Store/CodeReview';
+import { testData, LocalCodeReviewStorage } from './Store/CodeReview';
+import { CodeReview, CodeReviewStorageInterface } from './Store/Types';
 import './App.css';
 
 type AppState = {
   url: string;
+  data: CodeReview[];
 };
 
 class App extends React.Component<{}, AppState> {
-  state: Readonly<AppState> = {
-    url: '',
-  };
+  codeReviewStore: CodeReviewStorageInterface;
+
+  constructor(props: any) {
+    super(props);
+    // Passing updateData to the storage engine will ensure that whenever _save or
+    // _load are called, the application will we re-render accordingly.
+    this.codeReviewStore = new LocalCodeReviewStorage(this.updateData);
+    this.codeReviewStore._set(testData);
+    this.state = { url: '', data: this.codeReviewStore.Data() };
+  }
+
+  updateData(data: CodeReview[]): void {
+    this.setState({ data });
+  }
 
   componentDidMount() {
     if (window.chrome !== undefined) {
@@ -38,7 +51,7 @@ class App extends React.Component<{}, AppState> {
   render() {
     return (
       <div>
-        <Entry url={this.state.url} data={testData} />
+        <Entry url={this.state.url} data={this.state.data} />
       </div>
     );
   }

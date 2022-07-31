@@ -12,9 +12,11 @@ const testData: CodeReview[] = [
 
 class LocalCodeReviewStorage implements CodeReviewStorageInterface {
   data: CodeReview[];
+  updater: (data: CodeReview[]) => void;
 
-  constructor(data: CodeReview[]) {
-    this.data = data;
+  constructor(updater: (data: CodeReview[]) => void) {
+    this.data = [];
+    this.updater = updater;
   }
 
   Data(): CodeReview[] {
@@ -99,6 +101,7 @@ class LocalCodeReviewStorage implements CodeReviewStorageInterface {
       for (let cr of this.data) {
         if (cr.url === codeReview.url) {
           this.data.splice(idx, 1);
+          this.updater(this.data);
           return;
         }
         idx++;
@@ -109,17 +112,23 @@ class LocalCodeReviewStorage implements CodeReviewStorageInterface {
     for (let cr of this.data) {
       if (cr.url === codeReview.url) {
         this.data[idx] = codeReview;
+        this.updater(this.data);
         return;
       }
     }
 
     this.data.push(codeReview);
+    this.updater(this.data);
     // TODO save this.data to local storage
   }
 
   // _load pulls from local storage
   _load(): void {
     return;
+  }
+
+  _set(data: CodeReview[]): void {
+    this.data = data;
   }
 }
 

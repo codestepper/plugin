@@ -1,14 +1,14 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Comment from './Comment'
-import Page from './Page'
-import Buttons from './Buttons'
+import Comment from './Comment';
+import Page from './Page';
+import Buttons from './Buttons';
 import { CodeReview } from '../Store/CodeReview';
 
 type EntryProps = {
   url: string;
-  data: CodeReview[]
+  data: CodeReview[];
 };
 
 type EntryState = {
@@ -17,22 +17,22 @@ type EntryState = {
   pages: number;
   comment: string;
   codeReview: CodeReview;
-}
+};
 
 const initialEntryState = {
-  id: "",
+  id: '',
   page: 1,
   pages: 1,
-  comment: "",
-  codeReview: { url: "", anchors: [] },
-}
+  comment: '',
+  codeReview: { url: '', anchors: [] },
+};
 
 class Entry extends React.Component<EntryProps, EntryState> {
   state: Readonly<EntryState> = initialEntryState;
 
   handlePaginationChange(_: any, page: number): void {
-    let comment = ""
-    let anchor = this.state.codeReview.anchors[page - 1]
+    let comment = '';
+    let anchor = this.state.codeReview.anchors[page - 1];
     if (anchor !== undefined) {
       comment = anchor.comment;
     }
@@ -58,7 +58,7 @@ class Entry extends React.Component<EntryProps, EntryState> {
         currentURL = new URL(this.props.url);
         storedURL = new URL(codeReview.url);
       } catch (e) {
-        console.debug("error parsing url:", e);
+        console.debug('error parsing url:', e);
         return;
       }
 
@@ -77,7 +77,7 @@ class Entry extends React.Component<EntryProps, EntryState> {
           pages: codeReview.anchors.length + 1,
           comment: codeReview.anchors[page - 1].comment,
           codeReview,
-        }
+        };
 
         this.setState(newState);
         return;
@@ -85,7 +85,7 @@ class Entry extends React.Component<EntryProps, EntryState> {
     }
 
     this.setState(initialEntryState);
-    return
+    return;
   }
 
   render() {
@@ -96,7 +96,11 @@ class Entry extends React.Component<EntryProps, EntryState> {
             <Comment text={this.state.comment} />
           </Grid>
           <Grid item xs={12}>
-            <Page currentPage={this.state.page} totalPages={this.state.pages} handlePaginationChange={this.handlePaginationChange.bind(this)} />
+            <Page
+              currentPage={this.state.page}
+              totalPages={this.state.pages}
+              handlePaginationChange={this.handlePaginationChange.bind(this)}
+            />
           </Grid>
           <Grid item xs={12}>
             <Buttons />

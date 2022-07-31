@@ -2,7 +2,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
-import * as chrome from "sinon-chrome";
+import * as chrome from 'sinon-chrome';
 window.chrome = chrome;
 
 test('renders application logo', () => {

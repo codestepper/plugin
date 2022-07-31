@@ -12,15 +12,18 @@ const testData: CodeReview[] = [
 
 test('initializes local code review', () => {
   let codeReview: LocalCodeReview = new LocalCodeReview(testData);
-  expect(codeReview.data).toEqual(testData)
+  expect(codeReview.data).toEqual(testData);
 });
 
 test('LocalCodeReview.Get() findss correct code review', () => {
   let codeReview: LocalCodeReview = new LocalCodeReview(testData);
-  expect(codeReview.Get("http://localhost:8000/public/#diff-f9ab71f49e2da0a54c01b22e503d19c70987b66c806826d5ed1b7022f7314R31")).toEqual(testData[0])
-})
+  expect(
+    codeReview.Get(
+      'http://localhost:8000/public/#diff-f9ab71f49e2da0a54c01b22e503d19c70987b66c806826d5ed1b7022f7314R31'
+    )
+  ).toEqual(testData[0]);
+});
 
 test('LocalCodeReview.Add() inserts new record', () => {
-  let codeReview: LocalCodeReview = new LocalCodeReview([])
-
-})
+  let codeReview: LocalCodeReview = new LocalCodeReview([]);
+});

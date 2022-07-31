@@ -3,7 +3,7 @@ import Pagination from '@mui/material/Pagination';
 type Props = {
   currentPage: number
   totalPages: number
-  handlePaginationChange: any
+  handlePaginationChange: (_: any, page: number) => void
 }
 
 export default function PaginationOutlined(props: Props) {

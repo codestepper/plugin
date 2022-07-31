@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Entry from './Components/Entry'
-import { testData } from './Store/Data'
+import { testData } from './Store/CodeReview'
 import './App.css';
 
 type AppState = {

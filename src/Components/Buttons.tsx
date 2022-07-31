@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack';
 
 export default function Buttons() {
   return (
-      <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+    <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
       <Button variant="outlined" startIcon={<DeleteIcon />}>
         Delete
       </Button>

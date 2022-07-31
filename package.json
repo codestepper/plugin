@@ -43,8 +43,9 @@
   },
   "devDependencies": {
     "@types/chrome": "^0.0.193",
-    "react-scripts": "5.0.1",
     "@types/sinon-chrome": "^2.2.11",
+    "prettier": "^2.7.1",
+    "react-scripts": "5.0.1",
     "sinon-chrome": "^3.0.1"
   }
 }

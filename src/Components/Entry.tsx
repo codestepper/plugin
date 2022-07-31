@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Comment from './Comment'
 import Page from './Page'
 import Buttons from './Buttons'
-import { CodeReview } from '../Store/Data';
+import { CodeReview } from '../Store/CodeReview';
 
 type EntryProps = {
   url: string;
@@ -30,7 +30,7 @@ const initialEntryState = {
 class Entry extends React.Component<EntryProps, EntryState> {
   state: Readonly<EntryState> = initialEntryState;
 
-  handlePaginationChange(_: any, page: number) {
+  handlePaginationChange(_: any, page: number): void {
     let comment = ""
     let anchor = this.state.codeReview.anchors[page - 1]
     if (anchor !== undefined) {
@@ -75,7 +75,7 @@ class Entry extends React.Component<EntryProps, EntryState> {
           id: currentURL.searchParams.toString(),
           page: page,
           pages: codeReview.anchors.length + 1,
-          comment: codeReview.anchors[page-1].comment,
+          comment: codeReview.anchors[page - 1].comment,
           codeReview,
         }
 
@@ -96,7 +96,7 @@ class Entry extends React.Component<EntryProps, EntryState> {
             <Comment text={this.state.comment} />
           </Grid>
           <Grid item xs={12}>
-            <Page currentPage={this.state.page} totalPages={this.state.pages} handlePaginationChange={this.handlePaginationChange.bind(this)}/>
+            <Page currentPage={this.state.page} totalPages={this.state.pages} handlePaginationChange={this.handlePaginationChange.bind(this)} />
           </Grid>
           <Grid item xs={12}>
             <Buttons />

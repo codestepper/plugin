@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Comment from './Comment';
 import Page from './Page';
 import Buttons from './Buttons';
-import { CodeReview } from '../Store/CodeReview';
+import { CodeReview } from '../Store/Types';
 
 type EntryProps = {
   url: string;

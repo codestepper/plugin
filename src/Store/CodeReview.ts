@@ -1,12 +1,4 @@
-export type CodeReview = {
-  url: string;
-  anchors: Anchor[];
-};
-
-export type Anchor = {
-  id: string;
-  comment: string;
-};
+import { CodeReview, CodeReviewStorageInterface } from './Types';
 
 const testData: CodeReview[] = [
   {
@@ -18,18 +10,15 @@ const testData: CodeReview[] = [
   },
 ];
 
-interface CodeReviewInterface {
-  data: CodeReview[];
-  Get(url: string): CodeReview | undefined;
-  Add(url: string, id: string, comment: string): void;
-  Delete(url: string, id: string): void;
-}
-
-class LocalCodeReview implements CodeReviewInterface {
+class LocalCodeReviewStorage implements CodeReviewStorageInterface {
   data: CodeReview[];
 
   constructor(data: CodeReview[]) {
     this.data = data;
+  }
+
+  Data(): CodeReview[] {
+    return this.data;
   }
 
   Get(url: string): CodeReview | undefined {
@@ -58,15 +47,80 @@ class LocalCodeReview implements CodeReviewInterface {
     }
   }
 
-  Add(url: string, id: string, comment: string): void {}
+  Save(url: string, id: string, comment: string): CodeReview[] {
+    let cr = this.Get(url);
+    if (cr === undefined) {
+      cr = { url, anchors: [] };
+    }
 
-  Delete(url: string, id: string): void {}
+    let codeReview: CodeReview = cr;
 
-  // _save persists state to local storage
-  _save(): void {}
+    // case of updating the comment in an anchor
+    codeReview.anchors.forEach((anchor, idx) => {
+      if (anchor.id === id) {
+        anchor.comment = comment;
+        codeReview.anchors[idx] = anchor;
+        this._save(codeReview);
+        return this.data;
+      }
+
+      idx++;
+    });
+
+    codeReview.anchors.push({ id, comment });
+    this._save(codeReview);
+    return this.data;
+  }
+
+  Delete(url: string, id: string): CodeReview[] {
+    for (let codeReview of this.data) {
+      if (codeReview.url === url) {
+        let idx = 0;
+        for (let anchor of codeReview.anchors) {
+          if (anchor.id === id) {
+            codeReview.anchors.splice(idx, 1);
+            this._save(codeReview);
+            break;
+          }
+
+          idx++;
+        }
+      }
+    }
+
+    return this.data;
+  }
+
+  // _save updates data and persists state to local storage
+  _save(codeReview: CodeReview): void {
+    // No anchors means delete it!
+    if (codeReview.anchors.length === 0) {
+      let idx = 0;
+      for (let cr of this.data) {
+        if (cr.url === codeReview.url) {
+          this.data.splice(idx, 1);
+          return;
+        }
+        idx++;
+      }
+    }
+
+    let idx = 0;
+    for (let cr of this.data) {
+      if (cr.url === codeReview.url) {
+        this.data[idx] = codeReview;
+        return;
+      }
+    }
+
+    this.data.push(codeReview);
+    // TODO save this.data to local storage
+  }
 
   // _load pulls from local storage
-  _load(): void {}
+  _load(): void {
+    return;
+  }
 }
 
-export { testData, LocalCodeReview };
+export { testData, LocalCodeReviewStorage };

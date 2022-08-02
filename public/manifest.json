@@ -2,16 +2,23 @@
   "name": "codestepper",
   "description": "",
   "version": "1.0",
-  "manifest_version": 3,
   "action": {
-    "default_popup": "index.html",
-    "default_title": ""
+    "default_title": "Codestepper"
   },
-  "browser_action": {},
-  "permissions": ["tabs", "storage"],
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["tabs", "storage", "activeTab", "scripting", "notifications"],
   "icons": {
     "16": "codestepper.png",
     "48": "codestepper.png",
     "128": "codestepper.png"
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }

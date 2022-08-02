@@ -48,7 +48,7 @@ class Entry extends React.Component<EntryProps, EntryState> {
       chrome.tabs.update({ url: this.state.url + id });
     } else {
       // Unset the URL to avoid duplicates
-      chrome.tabs.update({ url: this.state.url });
+      chrome.tabs.update({ url: this.state.url + '#' });
     }
 
     const newState = {

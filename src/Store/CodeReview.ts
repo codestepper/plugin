@@ -52,7 +52,7 @@ class LocalCodeReviewStorage implements CodeReviewStorageInterface {
   }
 
   Save(url: string, id: string, comment: string): CodeReview[] {
-    if (id === '') {
+    if (id === '' || id === '#') {
       return this.data;
     }
 

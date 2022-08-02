@@ -23,9 +23,9 @@ class LocalCodeReviewStorage implements CodeReviewStorageInterface {
     return this.data;
   }
 
-  Get(url: string): CodeReview | undefined {
+  Get(url: string): CodeReview {
     if (this.data === undefined) {
-      return;
+      return { url, anchors: [] };
     }
 
     for (let codeReview of this.data) {
@@ -37,7 +37,7 @@ class LocalCodeReviewStorage implements CodeReviewStorageInterface {
         storedURL = new URL(codeReview.url);
       } catch (e) {
         console.debug('error parsing url:', e);
-        return;
+        return { url, anchors: [] };
       }
 
       const currentURLKey = currentURL.origin + currentURL.pathname;
@@ -47,9 +47,15 @@ class LocalCodeReviewStorage implements CodeReviewStorageInterface {
         return codeReview;
       }
     }
+
+    return { url, anchors: [] };
   }
 
   Save(url: string, id: string, comment: string): CodeReview[] {
+    if (id === '') {
+      return this.data;
+    }
+
     let cr = this.Get(url);
     if (cr === undefined) {
       cr = { url, anchors: [] };
@@ -123,12 +129,12 @@ class LocalCodeReviewStorage implements CodeReviewStorageInterface {
   }
 
   // _load pulls from local storage
-  _load(): void {
-    return;
-  }
+  async _load() {}
 
   _set(data: CodeReview[]): void {
     this.data = data;
+    // TODO
+    // chrome.storage.sync.set({ data: data });
   }
 }
 

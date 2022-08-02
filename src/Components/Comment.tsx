@@ -1,11 +1,28 @@
+import * as React from 'react';
 import TextField from '@mui/material/TextField';
 
 type Props = {
+  updateComment: (comment: string) => void;
   text: string;
 };
 
-export default function Comment(props: Props) {
-  return (
-    <TextField id="outlined-multiline-static" style={{ width: '100%' }} multiline defaultValue={props.text} rows={4} />
-  );
+class Comment extends React.Component<Props> {
+  handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    this.props.updateComment(e.target.value);
+  }
+
+  render() {
+    return (
+      <TextField
+        id="outlined-multiline-static"
+        style={{ width: '100%' }}
+        multiline
+        rows={4}
+        onChange={this.handleChange.bind(this)}
+        value={this.props.text}
+      />
+    );
+  }
 }
+
+export default Comment;

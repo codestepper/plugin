@@ -16,7 +16,7 @@ class App extends React.Component<{}, AppState> {
     super(props);
     // Passing updateData to the storage engine will ensure that whenever _save or
     // _load are called, the application will we re-render accordingly.
-    this.codeReviewStore = new LocalCodeReviewStorage(this.updateData);
+    this.codeReviewStore = new LocalCodeReviewStorage(this.updateData.bind(this));
     this.codeReviewStore._set(testData);
     this.state = { url: '', data: this.codeReviewStore.Data() };
   }
@@ -51,7 +51,13 @@ class App extends React.Component<{}, AppState> {
   render() {
     return (
       <div>
-        <Entry url={this.state.url} data={this.state.data} />
+        <Entry
+          url={this.state.url}
+          data={this.state.data}
+          getFn={this.codeReviewStore.Get.bind(this.codeReviewStore)}
+          saveFn={this.codeReviewStore.Save.bind(this.codeReviewStore)}
+          deleteFn={this.codeReviewStore.Delete.bind(this.codeReviewStore)}
+        />
       </div>
     );
   }

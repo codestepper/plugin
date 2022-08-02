@@ -45,7 +45,12 @@ class Entry extends React.Component<EntryProps, EntryState> {
     if (anchor !== undefined) {
       comment = anchor.comment;
       id = anchor.id;
-      chrome.tabs.update({ url: this.state.url + id });
+
+      // Send a message to the background.js to click the ID and scroll to the element
+      // if successful the response will contain { url } to change the tab
+      chrome.runtime.sendMessage({ path: this.state.url + id, id }, function (response) {
+        chrome.tabs.update(response);
+      });
     } else {
       // Unset the URL to avoid duplicates
       chrome.tabs.update({ url: this.state.url + '#' });

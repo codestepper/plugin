@@ -15,3 +15,24 @@ chrome.action.onClicked.addListener((tab) => {
     }
   });
 });
+
+chrome.runtime.onMessage.addListener(
+  function (request, sender, sendResponse) {
+    chrome.scripting.executeScript({
+      target: { tabId: sender.tab.id },
+      func: (request) => {
+        try {
+          const el = document.getElementById(request.id);
+          // Scroll the line into view and click on it
+          el.scrollIntoView({ block: "center", inline: "center" });
+          el.click();
+        } catch (e) {
+
+        }
+      },
+      args: [request]
+    });
+
+    sendResponse({ url: request.path });
+  }
+);

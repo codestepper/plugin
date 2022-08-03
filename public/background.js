@@ -2,7 +2,16 @@
 chrome.action.onClicked.addListener((tab) => {
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    func: () => {
+    func: (toggled) => {
+      const el = document.getElementById('cm-frame')
+      if (el !== null && el.style.display !== "none") {
+        el.style.display = "none";
+        return;
+      } else if (el !== null) {
+        el.style.display = "block";
+        return;
+      }
+
       const iframe = document.createElement('iframe');
       iframe.setAttribute('id', 'cm-frame');
       iframe.setAttribute(
@@ -12,7 +21,8 @@ chrome.action.onClicked.addListener((tab) => {
       iframe.setAttribute('allow', '');
       iframe.src = chrome.runtime.getURL('index.html')
       document.body.appendChild(iframe);
-    }
+      toggled = true;
+    },
   });
 });
 
@@ -21,6 +31,17 @@ chrome.runtime.onMessage.addListener(
     chrome.scripting.executeScript({
       target: { tabId: sender.tab.id },
       func: (request) => {
+        if (request.toggle) {
+          const el = document.getElementById('cm-frame')
+          if (el !== null && el.style.display !== "none") {
+            el.style.display = "none";
+            return;
+          } else if (el !== null) {
+            el.style.display = "block";
+            return;
+          }
+        }
+
         try {
           const el = document.getElementById(request.id);
           // Scroll the line into view and click on it
@@ -32,6 +53,10 @@ chrome.runtime.onMessage.addListener(
       },
       args: [request]
     });
+
+    if (request.toggle) {
+      return;
+    }
 
     sendResponse({ url: request.path });
   }

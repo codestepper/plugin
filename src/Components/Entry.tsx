@@ -1,14 +1,13 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import { CloseSharp, GitHub } from '@mui/icons-material';
+import isEqual from 'lodash/isEqual';
+import cloneDeep from 'lodash/cloneDeep';
 import Comment from './Comment';
 import Page from './Page';
 import Buttons from './Buttons';
+import Header from './Header';
 import { CodeReview, Anchor } from '../Store/Types';
-import isEqual from 'lodash/isEqual';
-import cloneDeep from 'lodash/cloneDeep';
 
 type EntryProps = {
   url: string;
@@ -125,21 +124,7 @@ class Entry extends React.Component<EntryProps, EntryState> {
       <Box sx={{ flexGrow: 1, width: 400, height: 300 }}>
         <Grid container p={2} spacing={1}>
           <Grid item xs={12}>
-            <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
-              <Box gridColumn="span 4" display="flex" justifyContent="flex-start" alignItems="flex-start">
-                <IconButton style={{ color: '#000000' }} href="https://github.com/codestepper/" target="_blank">
-                  <GitHub />
-                </IconButton>
-              </Box>
-              <Box gridColumn="span 4" display="flex" justifyContent="center" alignItems="center">
-                <img style={{ width: '60%' }} alt="logo" src={require('./Assets/codestepper.png')} />
-              </Box>
-              <Box gridColumn="span 4" display="flex" justifyContent="flex-end" alignItems="flex-end">
-                <IconButton>
-                  <CloseSharp onClick={() => chrome.runtime.sendMessage({ toggle: true })} />
-                </IconButton>
-              </Box>
-            </Box>
+            <Header />
           </Grid>
           <Grid item xs={12}>
             <Comment updateComment={this.handleCommentUpdate.bind(this)} text={this.state.comment} />

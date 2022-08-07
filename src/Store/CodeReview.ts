@@ -17,6 +17,7 @@ class LocalCodeReviewStorage implements CodeReviewStorageInterface {
   constructor(updater: (data: CodeReview[]) => void) {
     this.data = [];
     this.updater = updater;
+    this._load();
   }
 
   Data(): CodeReview[] {
@@ -108,6 +109,7 @@ class LocalCodeReviewStorage implements CodeReviewStorageInterface {
         if (cr.url === codeReview.url) {
           this.data.splice(idx, 1);
           this.updater(this.data);
+          this._set(this.data);
           return;
         }
         idx++;
@@ -119,22 +121,25 @@ class LocalCodeReviewStorage implements CodeReviewStorageInterface {
       if (cr.url === codeReview.url) {
         this.data[idx] = codeReview;
         this.updater(this.data);
+        this._set(this.data);
         return;
       }
     }
 
     this.data.push(codeReview);
     this.updater(this.data);
-    // TODO save this.data to local storage
+    this._set(this.data);
   }
 
   // _load pulls from local storage
-  async _load() {}
+  async _load() {
+    const res = await chrome.storage.sync.get('data');
+    this.data = res.data;
+  }
 
   _set(data: CodeReview[]): void {
     this.data = data;
-    // TODO
-    // chrome.storage.sync.set({ data: data });
+    chrome.storage.sync.set({ data: data });
   }
 }
 
